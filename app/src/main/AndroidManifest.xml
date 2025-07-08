@@ -2,6 +2,7 @@
     package="com.ranware.zhytomyrinfo">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +17,7 @@
             android:name=".ArchiveActivity"
             android:exported="true" />
         <activity android:name=".SettingsActivity" android:exported="true" />
+        <activity android:name=".ContactActivity" android:exported="true" />
         <activity android:name=".LinkActivity" android:exported="true" />
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>

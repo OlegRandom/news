@@ -1,41 +1,41 @@
 package com.ranware.zhytomyrinfo
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.OnBackPressedCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-
-class ArchiveActivity : AppCompatActivity() {
-    private lateinit var webView: WebView
+class ContactActivity : AppCompatActivity() {
     private lateinit var bottomNav: BottomNavigationView
-    private val baseUrl = "https://zhitomir.info"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-             setContentView(R.layout.activity_archive)
+        setContentView(R.layout.activity_contact)
 
-        setupWebView()
         setupBottomNav()
+        setupContactInfo()
         setupBackHandler()
     }
 
-    private fun setupWebView() {
-        webView = findViewById(R.id.archive_webview)
-        webView.settings.apply {
-            javaScriptEnabled = true
-            domStorageEnabled = true
+    private fun setupContactInfo() {
+        val phoneText = findViewById<TextView>(R.id.phone_text)
+        val emailText = findViewById<TextView>(R.id.email_text)
+        
+        // Set up phone number with click to dial
+        phoneText.setOnClickListener {
+            val phoneNumber = "+380412345678"
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+            startActivity(intent)
         }
-        webView.webViewClient = WebViewClient()
-        webView.loadUrl(baseUrl)
-        webView.post {
-            webView.evaluateJavascript(
-                "(function(){ var archive = document.querySelector('div.archive'); if(archive) document.body.innerHTML = archive.outerHTML; })();",
-                null
-            )
+        
+        // Set up email with click to send email
+        emailText.setOnClickListener {
+            val email = "info@zhitomir.info"
+            val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
+            startActivity(intent)
         }
     }
 
@@ -54,11 +54,11 @@ class ArchiveActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_archive -> {
-                    true // already here
+                    startActivity(Intent(this, ArchiveActivity::class.java))
+                    true
                 }
                 R.id.nav_contact -> {
-                    startActivity(Intent(this, ContactActivity::class.java))
-                    true
+                    true // already here
                 }
                 else -> false
             }
@@ -68,11 +68,8 @@ class ArchiveActivity : AppCompatActivity() {
     private fun setupBackHandler() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (webView.canGoBack()) webView.goBack()
-                else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                }
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
             }
         })
     }

@@ -39,6 +39,10 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(Intent(this, ArchiveActivity::class.java))
                     true
                 }
+                R.id.nav_contact -> {
+                    startActivity(Intent(this, ContactActivity::class.java))
+                    true
+                }
                 else -> false
             }
         }
